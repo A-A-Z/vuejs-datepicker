@@ -12,6 +12,19 @@
     </div>
 
     <div class="example">
+      <h3>Custom datepicker</h3>
+      <datepicker
+        placeholder="Select Date"
+        :disabled="state.disabled"
+        :highlighted="state.highlighted"
+        :labeled="state.labeled"
+      ></datepicker>
+      <code>
+          &lt;datepicker placeholder="Select Date"&gt;&lt;/datepicker&gt;
+      </code>
+    </div>
+
+    <div class="example">
         <h3>v-model datepicker</h3>
         <datepicker placeholder="Select Date" v-model="vModelExample"></datepicker>
         <code>
@@ -117,7 +130,31 @@ import Datepicker from '@/components/Datepicker'
 import DateLanguages from '@/utils/DateLanguages'
 
 const state = {
-  date1: new Date()
+  date1: new Date(),
+  disabled: {
+    to: new Date(2017, 8, 7)
+  },
+  highlighted: {
+    dates: [
+      new Date(2017, 8, 9),
+      new Date(2017, 8, 17),
+      new Date(2017, 8, 19)
+    ]
+  },
+  labeled: [
+    {
+      date: new Date(2017, 8, 9),
+      text: 'This is a test 1'
+    },
+    {
+      date: new Date(2017, 8, 17),
+      text: 'This is a test 2'
+    },
+    {
+      date: new Date(2017, 8, 19),
+      text: 'This is a test 3'
+    }
+  ]
 }
 
 export default {

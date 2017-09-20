@@ -50,6 +50,7 @@
                   :key="day.timestamp"
                   track-by="timestamp"
                   v-bind:class="dayClasses(day)"
+                  :title="day.label"
                   @click="selectDate(day)">{{ day.date }}</span>
             </div>
         </div>
@@ -126,6 +127,7 @@ export default {
     },
     disabled: Object,
     highlighted: Object,
+    labeled: Array,
     placeholder: String,
     inline: Boolean,
     calendarClass: [String, Object],
@@ -268,7 +270,8 @@ export default {
           isToday: dObj.toDateString() === (new Date()).toDateString(),
           isWeekend: dObj.getDay() === 0 || dObj.getDay() === 6,
           isSaturday: dObj.getDay() === 6,
-          isSunday: dObj.getDay() === 0
+          isSunday: dObj.getDay() === 0,
+          label: this.isLabeledDate(dObj)
         })
         dObj.setDate(dObj.getDate() + 1)
       }
@@ -405,7 +408,8 @@ export default {
      * @param {Object} day
      */
     selectDate (day) {
-      if (day.isDisabled) {
+      console.log('day', day)
+      if (day.isDisabled || day.isHighlighted) {
         return false
       }
       this.setDate(day.timestamp)
@@ -620,6 +624,27 @@ export default {
         highlighted = true
       }
       return highlighted
+    },
+
+    /**
+     * Whether a day is has a label
+     * @param {Date}
+     * @return {Boolean}
+     */
+    isLabeledDate (date) {
+      if (typeof this.labeled === 'undefined') {
+        return false
+      }
+
+      let labelText = ''
+
+      for (let labeled of this.labeled) {
+        if (date.toDateString() === labeled.date.toDateString()) {
+          labelText = labeled.text
+        }
+      }
+
+      return labelText
     },
 
     /**
@@ -883,9 +908,9 @@ $width = 300px
         text-align center
         vertical-align middle
         border 1px solid transparent
-        &:not(.blank):not(.disabled).day
-        &:not(.blank):not(.disabled).month
-        &:not(.blank):not(.disabled).year
+        &:not(.blank):not(.disabled):not(.highlighted).day
+        &:not(.blank):not(.disabled):not(.highlighted).month
+        &:not(.blank):not(.disabled):not(.highlighted).year
             cursor pointer
             &:hover
                 border 1px solid #4bd
@@ -896,7 +921,9 @@ $width = 300px
             &.highlighted
                 background #4bd
         &.highlighted
-            background #cae5ed
+            background #ebebeb
+            color #777
+            cursor default
         &.grey
             color #888
 
