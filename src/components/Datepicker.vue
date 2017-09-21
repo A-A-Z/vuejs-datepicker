@@ -408,7 +408,6 @@ export default {
      * @param {Object} day
      */
     selectDate (day) {
-      console.log('day', day)
       if (day.isDisabled || day.isHighlighted) {
         return false
       }
@@ -921,8 +920,8 @@ $width = 300px
             &.highlighted
                 background #4bd
         &.highlighted
-            background #ebebeb
-            color #777
+            background #eee
+            color #aaa
             cursor default
         &.grey
             color #888
